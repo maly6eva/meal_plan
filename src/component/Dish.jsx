@@ -7,7 +7,8 @@ export const Dish = ({handleSubmit}) => {
     const [text, setText] = useState('')
     const [sel, setSel] = useState('Завтрак')
     const [date, setDate] = useState(null)
-    const [number, setNumber] = useState(null)
+    const [number, setNumber] = useState('')
+    const [products, setProducts] = useState('')
 
 
     function handleChange(e) {
@@ -20,6 +21,7 @@ export const Dish = ({handleSubmit}) => {
             sel,
             date,
             number,
+            products: products.split(',').map(p => p.trim()),
             com: false
         }
         handleSubmit(newDish)
@@ -27,6 +29,7 @@ export const Dish = ({handleSubmit}) => {
         setSel('Завтрак')
         setDate(null)
         setNumber('')
+        setProducts('')
     }
 
 
@@ -42,6 +45,12 @@ export const Dish = ({handleSubmit}) => {
             <input type="text" placeholder='название блюда...' value={text} onChange={(e) => setText(e.target.value)}/>
             <input type="number" placeholder='0 ккал' value={number} onChange={(e) => setNumber(Number(e.target.value))}/>
             <button>Добавить!</button>
+
+            <div>
+                <input type="text" placeholder='placeholder="продукты (через запятую)"' value={products} onChange={(e) => setProducts(e.target.value)}/>
+            </div>
+
+
         </form>
     );
 };

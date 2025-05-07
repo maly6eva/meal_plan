@@ -1,11 +1,17 @@
 import './App.css'
 import {Dish} from "./component/Dish.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 function App() {
-    const [dish, setDish] = useState([]);
+    const [dish, setDish] = useState(() => {
+        const saved = localStorage.getItem('dish')
+        return saved ? JSON.parse(saved) : []
+    });
 
+    useEffect(() => {
+        localStorage.setItem('dish', JSON.stringify(dish))
+    }, [dish])
 
     function handleSubmit(di) {
         setDish((prev) => [di, ...prev]);
@@ -20,7 +26,12 @@ function App() {
                 {dish.map((d) => {
                     return (
                         <li key={d.id}>
-                            {d.date ? d.date.toLocaleDateString('ru-Ru') : 'Дата не выбрана'} - {d.sel} - {d.text} - {d.number} ккал
+                            {d.date ? new Date(d.date).toLocaleDateString('ru-RU') : 'Дата не выбрана'} - {d.sel} - {d.text} - {d.number} ккал
+                       <ul>
+                           {d.products?.map((prod, i) => (
+                               <li key={i}>🍎{prod}</li>
+                           ))}
+                       </ul>
                         </li>
                     )
                 })}
