@@ -7,7 +7,7 @@ export const Dish = ({handleSubmit}) => {
     const [text, setText] = useState('')
     const [sel, setSel] = useState('Завтрак')
     const [date, setDate] = useState(null)
-    const [number, setNumber] = useState(0)
+    const [number, setNumber] = useState(null)
 
 
     function handleChange(e) {
@@ -26,7 +26,7 @@ export const Dish = ({handleSubmit}) => {
         setText('')
         setSel('Завтрак')
         setDate(null)
-        setNumber(0)
+        setNumber('')
     }
 
 
@@ -39,8 +39,8 @@ export const Dish = ({handleSubmit}) => {
                 <option value="Обед">Обед</option>
                 <option value="Ужин">Ужин</option>
             </select>
-            <input type="text" value={text} onChange={(e) => setText(e.target.value)}/>
-            <input type="number" value={number} onChange={(e) => setNumber(Number(e.target.value))}/>
+            <input type="text" placeholder='название блюда...' value={text} onChange={(e) => setText(e.target.value)}/>
+            <input type="number" placeholder='0 ккал' value={number} onChange={(e) => setNumber(Number(e.target.value))}/>
             <button>Добавить!</button>
         </form>
     );
