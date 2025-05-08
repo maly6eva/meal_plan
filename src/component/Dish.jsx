@@ -21,7 +21,10 @@ export const Dish = ({handleSubmit}) => {
             sel,
             date,
             number,
-            products: products.split(',').map(p => p.trim()),
+            products: products.split(',').map(p => ({
+                id: Date.now() + Math.random(),
+                name: p.trim()
+            })),
             com: false
         }
         handleSubmit(newDish)
@@ -34,23 +37,47 @@ export const Dish = ({handleSubmit}) => {
 
 
     return (
-        <form onSubmit={handleChange}>
-            <DatePicker selected={date} placeholderText='-Выбери дату-' onChange={(newDate) => setDate(newDate)}
-                        dateFormat='dd.MM.yyyy' locale='ru'/>
-            <select value={sel} onChange={(e) => setSel(e.target.value)}>
-                <option value="Завтрак">Завтрак</option>
-                <option value="Обед">Обед</option>
-                <option value="Ужин">Ужин</option>
-            </select>
-            <input type="text" placeholder='название блюда...' value={text} onChange={(e) => setText(e.target.value)}/>
-            <input type="number" placeholder='0 ккал' value={number} onChange={(e) => setNumber(Number(e.target.value))}/>
-            <button>Добавить!</button>
-
+        <form onSubmit={handleChange} className={'form'}>
+          <div>
+              <label>
+                  Выбери дату
+                  <DatePicker selected={date} placeholderText='-Выбери дату-' onChange={(newDate) => setDate(newDate)}
+                              dateFormat='dd.MM.yyyy' locale='ru'/>
+              </label>
+          </div>
+          <div>
+              <label>
+                  Выбери прием пищи
+                  <select value={sel} onChange={(e) => setSel(e.target.value)}>
+                      <option value="Завтрак">Завтрак</option>
+                      <option value="Обед">Обед</option>
+                      <option value="Ужин">Ужин</option>
+                  </select>
+              </label>
+          </div>
             <div>
-                <input type="text" placeholder='placeholder="продукты (через запятую)"' value={products} onChange={(e) => setProducts(e.target.value)}/>
+                <label>
+                    Какое название блюда?
+                    <input type="text" placeholder='название блюда...' value={text} onChange={(e) => setText(e.target.value)}/>
+                </label>
             </div>
-
-
+            <div>
+                <label>
+                    Колличество ккал в блюде
+                    <input type="number" placeholder='0 ккал' value={number} onChange={(e) => setNumber(Number(e.target.value))}/>
+                </label>
+            </div>
+            <div>
+                    <label htmlFor="description">    Ингридиенты</label>
+                    <textarea
+                        id="description"
+                        rows="4"
+                        cols="50"
+                        placeholder="продукты (через запятую)"
+                        value={products}
+                        onChange={(e) => setProducts(e.target.value)}></textarea>
+            </div>
+            <button>Добавить!</button>
         </form>
     );
 };

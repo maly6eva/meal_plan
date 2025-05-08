@@ -1,6 +1,6 @@
 import './App.css'
 import {Dish} from "./component/Dish.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 function App() {
@@ -17,6 +17,22 @@ function App() {
         setDish((prev) => [di, ...prev]);
     }
 
+    function deleteDish(id) {
+        setDish((res) => res.filter((r) => r.id !== id))
+    }
+
+    function deleteProduct(dishId, productId) {
+        setDish(prev =>
+        prev.map(d => {
+            if (d.id === dishId) {
+                return {
+                    ...d,
+                    products: d.products.filter(p  => p.id !== productId)
+                }
+            }
+            return d;
+        }))
+    }
 
     return (
         <>
@@ -27,9 +43,12 @@ function App() {
                     return (
                         <li key={d.id}>
                             {d.date ? new Date(d.date).toLocaleDateString('ru-RU') : 'Дата не выбрана'} - {d.sel} - {d.text} - {d.number} ккал
+                            <button onClick={() => deleteDish(d.id)}>X</button>
                        <ul>
-                           {d.products?.map((prod, i) => (
-                               <li key={i}>🍎{prod}</li>
+                           {d.products?.map((prod) => (
+                               <li key={prod.id}>🍎{prod.name}
+                                   <button  onClick={() => deleteProduct(d.id, prod.id)}>X</button>
+                               </li>
                            ))}
                        </ul>
                         </li>
