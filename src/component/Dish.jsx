@@ -39,7 +39,7 @@ export const Dish = ({handleSubmit}) => {
     return (
         <form onSubmit={handleChange} className={'form'}>
           <div>
-              <label>
+              <label className="form-label">
                   Выбери дату
                   <DatePicker selected={date} placeholderText='-Выбери дату-' onChange={(newDate) => setDate(newDate)}
                               dateFormat='dd.MM.yyyy' locale='ru'/>
