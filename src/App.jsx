@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {Dish} from "./component/Dish.jsx";
+import React, {useEffect, useState} from "react";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [dish, setDish] = useState(() => {
+        const saved = localStorage.getItem('dish')
+        return saved ? JSON.parse(saved) : []
+    });
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        localStorage.setItem('dish', JSON.stringify(dish))
+    }, [dish])
+
+    function handleSubmit(di) {
+        setDish((prev) => [di, ...prev]);
+    }
+
+    function deleteDish(id) {
+        setDish((res) => res.filter((r) => r.id !== id))
+    }
+
+    function deleteProduct(dishId, productId) {
+        setDish(prev =>
+        prev.map(d => {
+            if (d.id === dishId) {
+                return {
+                    ...d,
+                    products: d.products.filter(p  => p.id !== productId)
+                }
+            }
+            return d;
+        }))
+    }
+
+    return (
+        <>
+            <h1>🍽️ План питания</h1>
+            <Dish handleSubmit={handleSubmit} setDish={setDish}/>
+            <ul>
+                {dish.map((d) => {
+                    return (
+                        <li key={d.id}>
+                            {d.date ? new Date(d.date).toLocaleDateString('ru-RU') : 'Дата не выбрана'} - {d.sel} - {d.text} - {d.number} ккал
+                            <button onClick={() => deleteDish(d.id)}>X</button>
+                       <ul>
+                           {d.products?.map((prod) => (
+                               <li key={prod.id}>🍎{prod.name}
+                                   <button  onClick={() => deleteProduct(d.id, prod.id)}>X</button>
+                               </li>
+                           ))}
+                       </ul>
+                        </li>
+                    )
+                })}
+            </ul>
+        </>
+    )
 }
 
 export default App
