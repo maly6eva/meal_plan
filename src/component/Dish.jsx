@@ -9,6 +9,8 @@ export const Dish = ({handleSubmit}) => {
     const [date, setDate] = useState(null)
     const [number, setNumber] = useState('')
     const [products, setProducts] = useState('')
+    const [open, setOpen] = useState(false);
+
 
 
     function handleChange(e) {
@@ -41,8 +43,16 @@ export const Dish = ({handleSubmit}) => {
           <div>
               <label className="form-label">
                   Выбери дату
-                  <DatePicker selected={date} placeholderText='-Выбери дату-' onChange={(newDate) => setDate(newDate)}
-                              dateFormat='dd.MM.yyyy' locale='ru'/>
+                  <DatePicker
+                      selected={date}
+                      onChange={(newDate) => {
+                          setDate(newDate)
+                      }}
+                      shouldCloseOnSelect={true}
+                      placeholderText="-Выбери дату-"
+                      dateFormat="dd.MM.yyyy"
+                      locale="ru"
+                  />
               </label>
           </div>
           <div>
